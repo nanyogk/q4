@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html uk-dark>
+
+<head>
+    <title>English Quiz App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/css/uikit.min.css" />
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            height: 100vh;
+            /* Make the body fill the entire viewport height */
+        }
+
+        .uk-card {
+            background-color: #181818;
+            /* Match the body background */
+            border-color: #303030;
+            /* Slightly lighter border */
+            color: #e0e0e0;
+        }
+
+        .uk-card-title {
+            color: #ffffff !important;
+            /* Pure white for maximum contrast */
+        }
+
+        .uk-button-default {
+            background-color: #333;
+            /* Darker background for default buttons */
+            color: #e0e0e0;
+            /* Lighter text for better contrast */
+        }
+
+        .uk-button-secondary {
+            background-color: #444;
+            /* Darker background for the "Next" button */
+            color: #f0f0f0;
+            /* Lighter text */
+        }
+
+        #question-card {
+            margin-bottom: 20px;
+        }
+
+        .uk-grid-match>div {
+            margin-bottom: 10px;
+        }
+
+        .buttons-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .translation {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .correct {
+            /* Style for the correct answer */
+            background-color: #d4edda;
+            /* Light green background */
+            border-color: #c3e6cb;
+            /* Green border */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="uk-container">
+        <div class="uk-card uk-card-default uk-card-body" id="question-card">
+            <h3 class="uk-card-title">Question:</h3>
+            <p id="question-text">What did Character A say to Character B in the conversation?</p>
+            <div class="buttons-container">
+                <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
+                <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+            </div>
+            <div class="translation">
+                <p>キャラクターAは会話の中でキャラクターBに何と言いましたか？</p>
+            </div>
+        </div>
+
+        <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-1" data-answer="A">
+                    <p id="choice-1-text">Choice A: "I think it's time to go to the park."</p>
+                    <div class="buttons-container">
+                        <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
+                        <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+                    </div>
+                    <div class="translation">
+                        <p>選択肢A：「そろそろ公園に行く時間だと思います。」</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-2" data-answer="B">
+                    <p id="choice-2-text">Choice B: "Did you finish your homework?"</p>
+                    <div class="buttons-container">
+                        <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
+                        <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+                    </div>
+                    <div class="translation">
+                        <p>選択肢B：「宿題は終わりましたか？」</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-3" data-answer="C">
+                    <p id="choice-3-text">Choice C: "That's a great idea!"</p>
+                    <div class="buttons-container">
+                        <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
+                        <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+                    </div>
+                    <div class="translation">
+                        <p>選択肢C：「それは素晴らしいアイデアですね！」</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-4" data-answer="D">
+                    <p id="choice-4-text">Choice D: "I'm not sure I understand."</p>
+                    <div class="buttons-container">
+                        <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
+                        <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+                    </div>
+                    <div class="translation">
+                        <p>選択肢D：「よくわかりません。」</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="uk-button uk-button-primary" id="show-answer-button">Show Answer</button>
+        <button class="uk-button uk-button-secondary" id="next-button">Next</button>
+    </div>
+
+    <script>
+        // Get all the translate buttons
+        const translateButtons = document.querySelectorAll('.translate-button');
+
+        // Add click event listeners to each button
+        translateButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Find the closest translation div and toggle its display
+                const translationDiv = button.closest('.uk-card-body').querySelector('.translation');
+                if (translationDiv.style.display === 'none' || translationDiv.style.display === '') {
+                    translationDiv.style.display = 'block';
+                } else {
+                    translationDiv.style.display = 'none';
+                }
+            });
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit-icons.min.js"></script>
+</body>
+
+</html>
