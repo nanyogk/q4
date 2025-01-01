@@ -1,0 +1,63 @@
+A quiz webapp, built with uikit.
+The layout is card based,
+
+On laptop or big screen, it looks like below.
+[Question card]
+[1][2card]
+[3][4card]
+
+On Mobile, they stack horizontally.
+[Qcard]
+[1card]
+[2card]
+[3card]
+[4card]
+
+Each choice card has Title, radio button,accordion to show hidden text(translation) and footer with button1, button2. 
+
+Qcard also has accordion And footer button1, button2. 
+
+At the button of the page, there is a answer (hidden by default) segment to put some explanation. Under the answer segment, there should be button3(show answer) button4(next)
+
+give me a mockup?
+
+
+--
+give me 2 json below in array, for mockup. note: Condition is not dynamic.
+
+Question: Choose a word which has the same syllable as the word 
+Question Body: "{word0}"
+choice1: {id},{word1}, {hint (phonetique)}
+choice2,3,4: {same as choice1}
+Answer: {answer-id}, {answer explanation}
+
+Also - give me 2 json below in array too. Same Json Structure required.
+
+Question: Choose an appropriate word for the context. 
+Body: I am so tired, I want to go to {word}
+choice1: {id},{word1}, {hint (phonetique)}
+choice2,3,4: {same as choice1}
+Answer: {answer-id}, {answer explanation}
+
+Also - give me 2 json below in array too. Same Json Structure required.
+
+Question: Choose an appropriate reply for the context. 
+Body: [brother] Lets go somewhere cool.
+choice1: {id},{reply}, {hint, null if uncessesary}
+choice2,3,4: {same as choice1}
+Answer: {answer-id}, {answer explanation}
+
+Also - give me 2 json below in array too. Same Json Structure required.
+
+Question: Choose an appropriate insight for the conversation. 
+Body: {a conversation, 2 or 3 lines}.
+choice1: {id},{insight, like He is angry}, {hint, null if uncessesary}
+choice2,3,4: {same as choice1}
+Answer: {answer-id}, {answer explanation}
+-----
+
+Ok, let's modify the cards with the given json structure.
+
+header[radio][choice][plus sign for accordion]
+hidden[hint. translation will also be placed here]
+footer[listen button]

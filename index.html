@@ -1,182 +1,243 @@
 <!DOCTYPE html>
-<html uk-dark>
+<html lang="en">
 
 <head>
-    <title>English Quiz App</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/css/uikit.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/css/uikit.min.css" />
     <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            height: 100vh;
-            /* Make the body fill the entire viewport height */
-        }
-
-        .uk-card {
-            background-color: #181818;
-            /* Match the body background */
-            border-color: #303030;
-            /* Slightly lighter border */
-            color: #e0e0e0;
-        }
-
-        .uk-card-title {
-            color: #ffffff !important;
-            /* Pure white for maximum contrast */
-        }
-
-        .uk-button-default {
-            background-color: #333;
-            /* Darker background for default buttons */
-            color: #e0e0e0;
-            /* Lighter text for better contrast */
-        }
-
-        .uk-button-secondary {
-            background-color: #444;
-            /* Darker background for the "Next" button */
-            color: #f0f0f0;
-            /* Lighter text */
-        }
-
-        #question-card {
-            margin-bottom: 20px;
-        }
-
-        .uk-grid-match>div {
-            margin-bottom: 10px;
-        }
-
-        .buttons-container {
+        /* Custom CSS to style the plus sign and hide the hint initially */
+        .choice-card .uk-card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .translation {
+        .choice-card .plus-sign {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .choice-card .hint {
             display: none;
+            /* Initially hidden */
             margin-top: 10px;
         }
 
-        .correct {
-            /* Style for the correct answer */
-            background-color: #d4edda;
-            /* Light green background */
-            border-color: #c3e6cb;
-            /* Green border */
+        .choice-card .hint.show {
+            display: block;
         }
     </style>
 </head>
 
 <body>
-    <div class="uk-container">
-        <div class="uk-card uk-card-default uk-card-body" id="question-card">
-            <h3 class="uk-card-title">Question:</h3>
-            <p id="question-text">What did Character A say to Character B in the conversation?</p>
-            <div class="buttons-container">
-                <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
-                <button class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
+
+    <div class="uk-container uk-margin-top">
+
+        <div class="uk-card uk-card-default uk-card-body uk-margin-bottom question-card">
+            <h3 class="uk-card-title" id="questionTitle"></h3>
+            <p id="questionBody"></p>
+        </div>
+
+        <div class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-2@m uk-text-center" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card">
+                    <div class="uk-card-header">
+                        <input type="radio" name="answer" id="choice1" value="">
+                        <label for="choice1"></label>
+                        <span class="plus-sign" onclick="toggleHint(this)">+</span>
+                    </div>
+                    <div class="hint" id="hint1">
+                        <p>Hint: </p>
+                        <p class="translation"></p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <button class="uk-button uk-button-default listen-btn">Listen</button>
+                    </div>
+                </div>
             </div>
-            <div class="translation">
-                <p>キャラクターAは会話の中でキャラクターBに何と言いましたか？</p>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card">
+                    <div class="uk-card-header">
+                        <input type="radio" name="answer" id="choice2" value="">
+                        <label for="choice2"></label>
+                        <span class="plus-sign" onclick="toggleHint(this)">+</span>
+                    </div>
+                    <div class="hint" id="hint2">
+                        <p>Hint: </p>
+                        <p class="translation"></p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <button class="uk-button uk-button-default listen-btn">Listen</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card">
+                    <div class="uk-card-header">
+                        <input type="radio" name="answer" id="choice3" value="">
+                        <label for="choice3"></label>
+                        <span class="plus-sign" onclick="toggleHint(this)">+</span>
+                    </div>
+                    <div class="hint" id="hint3">
+                        <p>Hint: </p>
+                        <p class="translation"></p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <button class="uk-button uk-button-default listen-btn">Listen</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body choice-card">
+                    <div class="uk-card-header">
+                        <input type="radio" name="answer" id="choice4" value="">
+                        <label for="choice4"></label>
+                        <span class="plus-sign" onclick="toggleHint(this)">+</span>
+                    </div>
+                    <div class="hint" id="hint4">
+                        <p>Hint: </p>
+                        <p class="translation"></p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <button class="uk-button uk-button-default listen-btn">Listen</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
-            <div>
-                <label>
-                    <input class="uk-radio" type="radio" name="answer" value="A">
-                    <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-1">
-                        <p id="choice-1-text">Choice A: "I think it's time to go to the park."</p>
-                        <div class="translation">
-                            <p>選択肢A：「そろそろ公園に行く時間だと思います。」</p>
-                        </div>
-                        <div class="buttons-container">
-                            <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
-                        </div>
-                    </div>
-                </label>
-            </div>
-            <div>
-                <label>
-                    <input class="uk-radio" type="radio" name="answer" value="B">
-                    <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-2">
-                        <p id="choice-2-text">Choice B: "Did you finish your homework?"</p>
-                        <div class="translation">
-                            <p>選択肢B：「宿題は終わりましたか？」</p>
-                        </div>
-                        <div class="buttons-container">
-                            <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
-                        </div>
-                    </div>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    <input class="uk-radio" type="radio" name="answer" value="C">
-                    <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-3">
-                        <p id="choice-3-text">Choice C: "That's a great idea!"</p>
-                        <div class="translation">
-                            <p>選択肢C：「それは素晴らしいアイデアですね！」</p>
-                        </div>
-                        <div class="buttons-container">
-                            <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
-                        </div>
-                    </div>
-                </label>
-            </div>
-
-            <div>
-                <label>
-                    <input class="uk-radio" type="radio" name="answer" value="D">
-                    <div class="uk-card uk-card-default uk-card-body choice-card" id="choice-4">
-                        <p id="choice-4-text">Choice D: "I'm not sure I understand."</p>
-                        <div class="translation">
-                            <p>選択肢D：「よくわかりません。」</p>
-                        </div>
-                        <div class="buttons-container">
-                            <button class="uk-button uk-button-small uk-button-primary listen-button">Listen</button>
-                            <button
-                                class="uk-button uk-button-small uk-button-default translate-button">Translate</button>
-                        </div>
-                    </div>
-                </label>
+        <div class="uk-margin-top" hidden id="answerSection">
+            <div class="uk-card uk-card-default uk-card-body">
+                <h4 class="uk-card-title">Answer Explanation</h4>
+                <p id="answerExplanation"></p>
             </div>
         </div>
 
-        <button class="uk-button uk-button-primary" id="show-answer-button">Show Answer</button>
-        <button class="uk-button uk-button-secondary" id="next-button">Next</button>
+        <div class="uk-margin-top">
+            <button class="uk-button uk-button-secondary" id="showAnswerBtn">Show Answer</button>
+            <button class="uk-button uk-button-primary" id="nextBtn">Next</button>
+        </div>
+
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/js/uikit-icons.min.js"></script>
+    <script src="mockdata.js"></script>
     <script>
-        // Get all the translate buttons
-        const translateButtons = document.querySelectorAll('.translate-button');
 
-        // Add click event listeners to each button
-        translateButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Find the closest translation div and toggle its display
-                const translationDiv = button.closest('.uk-card-body').querySelector('.translation');
-                if (translationDiv.style.display === 'none' || translationDiv.style.display === '') {
-                    translationDiv.style.display = 'block';
-                } else {
-                    translationDiv.style.display = 'none';
-                }
+        let currentQuestionIndex = 0;
+
+        const questionTitle = document.getElementById("questionTitle");
+        const questionBody = document.getElementById("questionBody");
+        const answerExplanation = document.getElementById("answerExplanation");
+        const showAnswerBtn = document.getElementById("showAnswerBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        // Get the choice elements
+        const choice1 = document.getElementById("choice1");
+        const choice2 = document.getElementById("choice2");
+        const choice3 = document.getElementById("choice3");
+        const choice4 = document.getElementById("choice4");
+        const label1 = document.querySelector('label[for="choice1"]');
+        const label2 = document.querySelector('label[for="choice2"]');
+        const label3 = document.querySelector('label[for="choice3"]');
+        const label4 = document.querySelector('label[for="choice4"]');
+        const hint1 = document.getElementById("hint1").querySelector("p");
+        const hint2 = document.getElementById("hint2").querySelector("p");
+        const hint3 = document.getElementById("hint3").querySelector("p");
+        const hint4 = document.getElementById("hint4").querySelector("p");
+
+        // Function to initialize card elements
+        function cardInit(currentQuestion) {
+            // Set question title and body
+            questionTitle.textContent = currentQuestion.question;
+            questionBody.textContent = currentQuestion.body;
+
+            // Set choice values, labels, and hints
+            const choices = [
+                { element: choice1, label: label1, hint: hint1 },
+                { element: choice2, label: label2, hint: hint2 },
+                { element: choice3, label: label3, hint: hint3 },
+                { element: choice4, label: label4, hint: hint4 }
+            ];
+
+            choices.forEach((choice, index) => {
+                choice.element.value = currentQuestion.choices[index].id;
+                choice.element.checked = false; // Reset radio selection
+                choice.label.textContent = currentQuestion.choices[index].choice;
+                choice.hint.textContent = "Hint: " + (currentQuestion.choices[index].hint || "");
+
+                // Remove background color from card
+                choice.element.parentNode.parentNode.classList.remove('uk-card-primary');
             });
+        }
+
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
+
+            // Initialize card elements
+            cardInit(currentQuestion);
+
+            // Hide answer section
+            answerSection.hidden = true;
+
+            // Close any open hints
+            const allHints = document.querySelectorAll(".hint");
+            allHints.forEach(hint => {
+                hint.classList.remove('show');
+            });
+
+            // Scroll to top of the page
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        function toggleHint(plusSignElement) {
+            const hint = plusSignElement.parentNode.nextElementSibling;
+            hint.classList.toggle('show')
+        }
+
+        showAnswerBtn.addEventListener("click", () => {
+            const currentQuestion = quizData[currentQuestionIndex];
+            answerExplanation.textContent = currentQuestion.explanation;
+            answerSection.hidden = false;
+
+            // Check which radio button is selected
+            const selectedChoice = document.querySelector('input[name="answer"]:checked');
+
+            // If an answer is selected
+            if (selectedChoice) {
+                const selectedAnswerId = parseInt(selectedChoice.value);
+                const correctAnswerId = currentQuestion.answer;
+
+                // Check if the selected answer is correct
+                if (selectedAnswerId === correctAnswerId) {
+                    answerExplanation.textContent = "Right! " + currentQuestion.explanation;
+                    selectedChoice.parentNode.parentNode.classList.add('uk-card-primary');
+                } else {
+                    answerExplanation.textContent = "Wrong! " + currentQuestion.explanation;
+                    // Find the correct choice card and highlight it
+                    const correctChoiceCard = document.querySelector(`#choice${correctAnswerId}`).parentNode.parentNode;
+                    correctChoiceCard.classList.add('uk-card-primary');
+                }
+            } else {
+                answerExplanation.textContent = "Please select an answer. " + currentQuestion.explanation;
+                const correctChoiceCard = document.querySelector(`#choice${correctAnswerId}`).parentNode.parentNode;
+                correctChoiceCard.classList.add('uk-card-primary');
+            }
         });
 
-    </script>
+        nextBtn.addEventListener("click", () => {
+            currentQuestionIndex = (currentQuestionIndex + 1) % quizData.length;
+            loadQuestion();
+        });
 
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.26/dist/js/uikit-icons.min.js"></script>
+        // Initial question load
+        loadQuestion();
+    </script>
 </body>
 
 </html>
