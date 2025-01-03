@@ -61,3 +61,13 @@ Ok, let's modify the cards with the given json structure.
 header[radio][choice][plus sign for accordion]
 hidden[hint. translation will also be placed here]
 footer[listen button]
+
+
+--
+<template>
+[Question card]
+[1][2card]
+[3][4card]
+[uk-alert div (with answer-explanation)]
+</template>
+[show button][next button]

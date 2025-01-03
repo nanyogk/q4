@@ -32,9 +32,24 @@
 </head>
 
 <body>
-
     <div class="uk-container uk-margin-top">
+        <div id="quizContainer"> </div>
 
+        <div class="uk-margin-top" id="alertContainer"></div>
+
+        <div class="uk-margin-top uk-flex uk-flex-middle">
+            <div class="uk-width-auto">
+                <button class="uk-button uk-button-secondary" id="showAnswerBtn">Show Answer</button>
+            </div>
+            <div class="uk-width-expand"></div>
+            <div class="uk-width-auto">
+                <button class="uk-button uk-button-primary" id="nextBtn">Next</button>
+            </div>
+        </div>
+    </div>
+
+
+    <template id="questionTemplate">
         <div class="uk-card uk-card-default uk-card-body uk-margin-bottom question-card">
             <h3 class="uk-card-title" id="questionTitle"></h3>
             <p id="questionBody"></p>
@@ -42,7 +57,7 @@
 
         <div class="uk-grid-small uk-child-width-1-2@s uk-child-width-1-2@m uk-text-center" uk-grid>
             <div>
-                <div class="uk-card uk-card-default uk-card-body choice-card">
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="card1">
                     <div class="uk-card-header">
                         <input type="radio" name="answer" id="choice1" value="">
                         <label for="choice1"></label>
@@ -58,7 +73,7 @@
                 </div>
             </div>
             <div>
-                <div class="uk-card uk-card-default uk-card-body choice-card">
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="card2">
                     <div class="uk-card-header">
                         <input type="radio" name="answer" id="choice2" value="">
                         <label for="choice2"></label>
@@ -74,7 +89,7 @@
                 </div>
             </div>
             <div>
-                <div class="uk-card uk-card-default uk-card-body choice-card">
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="card3">
                     <div class="uk-card-header">
                         <input type="radio" name="answer" id="choice3" value="">
                         <label for="choice3"></label>
@@ -90,7 +105,7 @@
                 </div>
             </div>
             <div>
-                <div class="uk-card uk-card-default uk-card-body choice-card">
+                <div class="uk-card uk-card-default uk-card-body choice-card" id="card4">
                     <div class="uk-card-header">
                         <input type="radio" name="answer" id="choice4" value="">
                         <label for="choice4"></label>
@@ -106,20 +121,11 @@
                 </div>
             </div>
         </div>
-
-        <div class="uk-margin-top" hidden id="answerSection">
-            <div class="uk-card uk-card-default uk-card-body">
-                <h4 class="uk-card-title">Answer Explanation</h4>
-                <p id="answerExplanation"></p>
-            </div>
+        <div id="alertBox" class="uk-margin-top uk-hidden" uk-alert>
+            <a href class="uk-alert-close" uk-close></a>
+            <p id="alertMessage">alertMessage</p>
         </div>
-
-        <div class="uk-margin-top">
-            <button class="uk-button uk-button-secondary" id="showAnswerBtn">Show Answer</button>
-            <button class="uk-button uk-button-primary" id="nextBtn">Next</button>
-        </div>
-
-    </div>
+    </template>
 
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.19/dist/js/uikit-icons.min.js"></script>
@@ -128,28 +134,35 @@
 
         let currentQuestionIndex = 0;
 
-        const questionTitle = document.getElementById("questionTitle");
-        const questionBody = document.getElementById("questionBody");
-        const answerExplanation = document.getElementById("answerExplanation");
+        const quizContainer = document.getElementById("quizContainer");
         const showAnswerBtn = document.getElementById("showAnswerBtn");
         const nextBtn = document.getElementById("nextBtn");
+        const questionTemplate = document.getElementById("questionTemplate");
+        const alertContainer = document.getElementById("alertContainer");
 
-        // Get the choice elements
-        const choice1 = document.getElementById("choice1");
-        const choice2 = document.getElementById("choice2");
-        const choice3 = document.getElementById("choice3");
-        const choice4 = document.getElementById("choice4");
-        const label1 = document.querySelector('label[for="choice1"]');
-        const label2 = document.querySelector('label[for="choice2"]');
-        const label3 = document.querySelector('label[for="choice3"]');
-        const label4 = document.querySelector('label[for="choice4"]');
-        const hint1 = document.getElementById("hint1").querySelector("p");
-        const hint2 = document.getElementById("hint2").querySelector("p");
-        const hint3 = document.getElementById("hint3").querySelector("p");
-        const hint4 = document.getElementById("hint4").querySelector("p");
+        function loadQuestion() {
+            const currentQuestion = quizData[currentQuestionIndex];
 
-        // Function to initialize card elements
-        function cardInit(currentQuestion) {
+            // Clone the template content
+            const templateContent = questionTemplate.content.cloneNode(true);
+
+            // Get the elements from the cloned template
+            const questionTitle = templateContent.getElementById("questionTitle");
+            const questionBody = templateContent.getElementById("questionBody");
+
+            const choice1 = templateContent.getElementById("choice1");
+            const choice2 = templateContent.getElementById("choice2");
+            const choice3 = templateContent.getElementById("choice3");
+            const choice4 = templateContent.getElementById("choice4");
+            const label1 = templateContent.querySelector('label[for="choice1"]');
+            const label2 = templateContent.querySelector('label[for="choice2"]');
+            const label3 = templateContent.querySelector('label[for="choice3"]');
+            const label4 = templateContent.querySelector('label[for="choice4"]');
+            const hint1 = templateContent.getElementById("hint1").querySelector("p");
+            const hint2 = templateContent.getElementById("hint2").querySelector("p");
+            const hint3 = templateContent.getElementById("hint3").querySelector("p");
+            const hint4 = templateContent.getElementById("hint4").querySelector("p");
+
             // Set question title and body
             questionTitle.textContent = currentQuestion.question;
             questionBody.textContent = currentQuestion.body;
@@ -167,32 +180,14 @@
                 choice.element.checked = false; // Reset radio selection
                 choice.label.textContent = currentQuestion.choices[index].choice;
                 choice.hint.textContent = "Hint: " + (currentQuestion.choices[index].hint || "");
-
-                // Remove background color from card
-                choice.element.parentNode.parentNode.classList.remove('uk-card-primary');
-            });
-        }
-
-        function loadQuestion() {
-            const currentQuestion = quizData[currentQuestionIndex];
-
-            // Initialize card elements
-            cardInit(currentQuestion);
-
-            // Hide answer section
-            answerSection.hidden = true;
-
-            // Close any open hints
-            const allHints = document.querySelectorAll(".hint");
-            allHints.forEach(hint => {
-                hint.classList.remove('show');
             });
 
-            // Scroll to top of the page
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+            // Clear any previous question content and append the new content
+            quizContainer.innerHTML = '';
+            quizContainer.appendChild(templateContent);
+
+            // Clear any previous alerts
+            alertContainer.innerHTML = '';
         }
 
         function toggleHint(plusSignElement) {
@@ -202,32 +197,39 @@
 
         showAnswerBtn.addEventListener("click", () => {
             const currentQuestion = quizData[currentQuestionIndex];
-            answerExplanation.textContent = currentQuestion.explanation;
-            answerSection.hidden = false;
-
+            // Find the alert box and message within the current question
+            const alertBox = quizContainer.querySelector("#alertBox");
+            const alertMessage = quizContainer.querySelector("#alertMessage");
+            const correctAnswerId = currentQuestion.answer;
+            const correctCard = quizContainer.querySelector(`#card${correctAnswerId}`);
             // Check which radio button is selected
-            const selectedChoice = document.querySelector('input[name="answer"]:checked');
+            const selectedChoice = quizContainer.querySelector('input[name="answer"]:checked');
 
-            // If an answer is selected
+            // Determine the alert type (success, danger, warning)
+            let alertType = 'warning'; // Default to warning if no choice
+            let message = "Please select an answer. "; // Default.
+
             if (selectedChoice) {
                 const selectedAnswerId = parseInt(selectedChoice.value);
-                const correctAnswerId = currentQuestion.answer;
 
-                // Check if the selected answer is correct
                 if (selectedAnswerId === correctAnswerId) {
-                    answerExplanation.textContent = "Right! " + currentQuestion.explanation;
-                    selectedChoice.parentNode.parentNode.classList.add('uk-card-primary');
+                    alertType = 'success';
+                    message = "Right! ";
+                    correctCard.classList.add('uk-card-primary');
                 } else {
-                    answerExplanation.textContent = "Wrong! " + currentQuestion.explanation;
-                    // Find the correct choice card and highlight it
-                    const correctChoiceCard = document.querySelector(`#choice${correctAnswerId}`).parentNode.parentNode;
-                    correctChoiceCard.classList.add('uk-card-primary');
+                    alertType = 'danger';
+                    message = "Wrong! ";
+                    correctCard.classList.add('uk-card-secondary');
                 }
             } else {
-                answerExplanation.textContent = "Please select an answer. " + currentQuestion.explanation;
-                const correctChoiceCard = document.querySelector(`#choice${correctAnswerId}`).parentNode.parentNode;
-                correctChoiceCard.classList.add('uk-card-primary');
+                // color the card with warning color.
+                correctCard.classList.add('uk-card-secondary');
+
             }
+            // Update the alert message and type, and show the alert
+            alertMessage.textContent = message + currentQuestion.explanation;
+            alertBox.classList.add(`uk-alert-${alertType}`); // Add AlertType.
+            alertBox.classList.remove('uk-hidden');
         });
 
         nextBtn.addEventListener("click", () => {
